@@ -1,9 +1,12 @@
-Roundhouse
-==========
+.. include::
+    ../README.rst
 
-----------
+API Docs
+--------
+
+Full package API documentation
 
 .. toctree::
-   :maxdepth: 2
+    :titlesonly:
 
-   readme
+   apidoc/roundhouse

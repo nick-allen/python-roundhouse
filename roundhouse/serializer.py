@@ -77,19 +77,45 @@ def get_serializer(format_):
     return get_serializers()[format_]
 
 
-def serialize(data, format_, pretty=False):
+def serialize(data, format_, **kwargs):
+    """Serialize data to given format
+
+    Args:
+        data: Data to be pushed through serializer
+        format_ (str): Format of serializer to use
+
+    Returns:
+        Serialized data
+    """
     serializer_class = get_serializer(format_)
-    serializer = serializer_class(pretty)
+    serializer = serializer_class(**kwargs)
 
-    stream = io.StringIO()
-
-    serializer.serialize(data, stream)
-
-    return stream.read()
+    return serializer.serialize(data, io.BytesIO()).getvalue()
 
 
-def deserialize(stream, format_):
+def deserialize(serialized_data, format_, **kwargs):
+    """Deserialize data into internal representation
+
+    Notes:
+        serialized_data is encoded and wrapped in a stream automatically as needed
+
+    Args:
+        serialized_data (str or stream): A string or stream to be deserialized
+        format_ (str): Format of serializer to use
+
+    Returns:
+        Deserialized data
+    """
     serializer_class = get_serializer(format_)
-    serializer = serializer_class()
+    serializer = serializer_class(**kwargs)
+
+    if not hasattr(serialized_data, 'read'):
+        # Wrap in stream
+        if hasattr(serialized_data, 'encode'):
+            serialized_data = serialized_data.encode()
+
+        stream = io.BytesIO(serialized_data)
+    else:
+        stream = serialized_data
 
     return serializer.deserialize(stream)

@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import datetime
+import shutil
 import sys
 import os
 
@@ -13,6 +14,13 @@ project_root = os.path.dirname(os.path.dirname(__file__))
 sys.path.insert(0, project_root)
 
 import roundhouse
+from sphinx.apidoc import main
+
+apidoc_dir = './apidoc'
+if os.path.isdir(apidoc_dir):
+    shutil.rmtree(apidoc_dir)
+
+main(['-f', '-T', '-e', '-M', '-o', apidoc_dir, '../roundhouse'])
 
 # -- General configuration ---------------------------------------------
 
