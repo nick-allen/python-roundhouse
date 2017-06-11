@@ -28,6 +28,9 @@ setup(
     entry_points={
         'console_scripts': [
             'roundhouse=roundhouse.cli:main'
+        ],
+        'roundhouse': [
+            'contrib_serializers=roundhouse.contrib.serializers'
         ]
     },
     include_package_data=True,
