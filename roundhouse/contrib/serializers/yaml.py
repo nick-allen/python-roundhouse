@@ -1,9 +1,12 @@
+from __future__ import absolute_import
+
 from collections import OrderedDict
 
 import yaml
 from roundhouse import Serializer
 
 yaml.add_representer(OrderedDict, lambda self, data: self.represent_mapping('tag:yaml.org,2002:map', data.items()))
+yaml.SafeLoader.add_constructor("tag:yaml.org,2002:python/unicode", lambda self, data: data.value)
 
 
 class YAMLSerializer(Serializer):
@@ -12,8 +15,8 @@ class YAMLSerializer(Serializer):
     format = 'yaml'
     extensions = ['.yml', '.yaml']
 
-    def serialize(self, data_dict, stream):
-        yaml.dump(data_dict, stream, default_flow_style=False)
+    def serialize(self, data, stream):
+        stream.write(yaml.dump(data, default_flow_style=not self.pretty).encode())
 
         return stream
 

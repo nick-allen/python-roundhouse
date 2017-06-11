@@ -3,17 +3,17 @@
 import click
 
 from roundhouse import __version__
-from roundhouse.serializer import discover_serializers
-from roundhouse.utils import get_file_extension
+from roundhouse.serializer import get_serializers
+from roundhouse.utils import get_file_extension, get_full_qualname
 
 
-serializers = discover_serializers()
-serializer_formats = list(serializers.keys())
+serializers = get_serializers()
+serializer_formats = sorted(serializers.keys())
 extension_to_format_map = {}
 
-for serializer in serializers.values():
-    for ext in serializer.extensions:
-        extension_to_format_map[ext] = serializer.format
+for _ in serializers.values():
+    for _ext in _.extensions:
+        extension_to_format_map[_ext] = _.format
 
 
 class ShortChoice(click.Choice):
@@ -49,22 +49,48 @@ class ShortChoice(click.Choice):
 @click.option(
     '-I',
     '--infile',
-    type=click.File('r', lazy=True),
+    type=click.File('rb', lazy=True),
     default='-',
     help='Read from file. Defaults to stdin'
 )
 @click.option(
     '-O',
     '--outfile',
-    type=click.File('w', lazy=True),
+    type=click.File('wb', lazy=True),
     default='-',
     help='Write to file. Defaults to stdout'
 )
-def main(input_format, output_format, infile, outfile):
+@click.option(
+    '-p',
+    '--pretty',
+    is_flag=True,
+    help='Prettify output where supported'
+)
+@click.option(
+    '-l',
+    '--list',
+    'list_',
+    is_flag=True,
+    help='List all installed available serializers, their formats and extensions, and exit'
+)
+def main(input_format, output_format, infile, outfile, pretty, list_):
     """Roundhouse
 
     Convert many formats to many formats
     """
+
+    if list_:
+        for serializer_format, serializer_class in sorted(serializers.items()):
+            click.echo('\n'.join([
+                serializer_format,
+                '-' * len(serializer_format),
+                'Serializer: ' + get_full_qualname(serializer_class),
+                'Format: ' + serializer_format,
+                'File Extensions: ' + ', '.join(serializer_class.extensions),
+                ''
+            ]))
+
+        raise SystemExit
 
     if input_format is None:
         if infile.name == '-':
@@ -90,8 +116,12 @@ def main(input_format, output_format, infile, outfile):
                 'check filename or explicitly provide output-format'
              ).format(ext))
 
-    input_serializer = serializers[input_format]()
-    output_serializer = serializers[output_format]()
+    kwargs = {
+        'pretty': pretty
+    }
+
+    input_serializer = serializers[input_format](**kwargs)
+    output_serializer = serializers[output_format](**kwargs)
 
     data = input_serializer.deserialize(infile)
     output_serializer.serialize(data, outfile)
