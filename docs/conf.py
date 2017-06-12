@@ -42,7 +42,8 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'Roundhouse'
-copyright = u"{}, {}".format(datetime.datetime.now().year, project)
+author = roundhouse.__author__
+copyright = u"{}, {}".format(datetime.datetime.now().year, author)
 
 # The version info for the project you're documenting, acts as replacement
 # for |version| and |release|, also used in various other places throughout
@@ -182,7 +183,7 @@ latex_elements = {
 latex_documents = [
     ('index', 'roundhouse.tex',
      u'Roundhouse Documentation',
-     u'Nick Allen', 'manual'),
+     author, 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at
@@ -213,7 +214,7 @@ latex_documents = [
 man_pages = [
     ('index', 'roundhouse',
      u'Roundhouse Documentation',
-     [u'Nick Allen'], 1)
+     [author], 1)
 ]
 
 # If true, show URL addresses after external links.
@@ -228,7 +229,7 @@ man_pages = [
 texinfo_documents = [
     ('index', 'roundhouse',
      u'Roundhouse Documentation',
-     u'Nick Allen',
+     author,
      'roundhouse',
      'One line description of project.',
      'Miscellaneous'),
