@@ -41,7 +41,7 @@ Or install all builtin serializers and dependencies bundled with core package
 
     pip install roundhouse[all]
 
-Additional serializer plugins can be published and installed via pypi/pip using the `roundhouse` setuptools entrypoint
+Additional serializer plugins can be published and installed via pypi/pip using the :code:`roundhouse` setuptools entrypoint
 pointing to module/package containing additional serializer classes
 
 
@@ -51,9 +51,9 @@ Usage
 CLI
 ^^^
 
-The `rh` CLI command is installed automatically, and defaults to reading from stdin and writing stdout
+The :code:`rh` CLI command is installed automatically, and defaults to reading from stdin and writing stdout
 
-Run `rh --help` for full usage instructions
+Run :code:`rh --help` for full usage instructions
 
 .. code-block:: bash
 
@@ -65,11 +65,11 @@ Run `rh --help` for full usage instructions
 Python
 ^^^^^^
 
-Data is serialized/deserialized to and from `dict` instances
+Data is serialized/deserialized to and from :code:`dict` instances
 
 Other data types may be supported depending on the serializer
 
-Use the `roundhouse.serialize` and `roundhouse.deserialize` functions with target format
+Use the :code:`roundhouse.serialize` and :code:`roundhouse.deserialize` functions with target format
 
 .. code-block:: python
 
