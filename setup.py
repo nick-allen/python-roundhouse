@@ -27,7 +27,7 @@ setup(
     long_description=README,
     author="Nick Allen",
     author_email='nick.allen.cse@gmail.com',
-    url='https://github.com/nick-allen/roundhouse',
+    url='https://github.com/nick-allen/python-roundhouse',
     packages=find_packages(include=['roundhouse']),
     setup_requires=[
         'setuptools_scm',

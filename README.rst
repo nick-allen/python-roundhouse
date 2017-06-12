@@ -31,8 +31,6 @@ Comes with just JSON and Pickle serializers by default, no external dependencies
 
 Install one or more additional serializers and their dependencies
 
-See :mod:`roundhouse.contrib.serializers` for list of available bundled serializers
-
 .. code-block:: bash
 
     pip install roundhouse[yaml] roundhouse[msgpack] ...
@@ -67,11 +65,11 @@ Run `rh --help` for full usage instructions
 Python
 ^^^^^^
 
-Data is serialized/deserialized to and from :class:`dict` instances
+Data is serialized/deserialized to and from `dict` instances
 
 Other data types may be supported depending on the serializer
 
-Use the :meth:`roundhouse.serialize` and :meth:`roundhouse.deserialize` functions with target format
+Use the `roundhouse.serialize` and `roundhouse.deserialize` functions with target format
 
 .. code-block:: python
 
