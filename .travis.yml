@@ -1,13 +1,19 @@
 language: python
 python: 3.6
-
 env:
-  - TOXENV=py36
-  - TOXENV=py35
-  - TOXENV=py34
-  - TOXENV=py33
-  - TOXENV=py27
-
+- TOXENV=py36
+- TOXENV=py35
+- TOXENV=py34
+- TOXENV=py33
+- TOXENV=py27
 install: pip install -U -r test-requirements.txt
-
 script: tox -e ${TOXENV}
+deploy:
+  provider: pypi
+  user: nickallen
+  password:
+    secure: QClNXxXv+bGZNOmG9WsRTP+jgEJmiIqE2YRiFVf9x9gqJQULmH7ELVZUrlCHUNmfHRBM1GRHvh5LRJxHfz3tnXH6GXGT0sr8zjtK71sLUjAP0LXak0+FsNpk0chnI122uqOfUDzR0oe2HCNdrDAMQgQ4CqjVINk3EjfW0MjHZk/0UEVlLOvZT0YC8qXctWL3s//A+ug1fegcwUggqQlehEHjFagziNaKCaSd8RnEYiarqZ7eFjk5mYyOXmyS4aoZjAtsvFGAkB6dZyzl1WauEz4D/jVAtDVE1vhE+WaecfQpieE6INhNOiGMtCkUUHC3/19IcqTZ5vcMJzRu9sKIaaCbNKat1puBDEY3ZXFMk3hVpO8DhsMeYY3je8BbXdCGvDsDDWvXP6pBRQ/OTbZT6DeZbYejEeaEvHtMBAKiW1LlL6VQjQQXSP7fJKDxiCrQHj/ItRlLpteV2NX9d/PzBPAyLUwrwNPtVk3DhpxdXmlWgQMi7H8B8UnEZMnpZMcYATr1Ou2J+vxVQzZIDeOQNLYuwcL2a07vrn3VXek9Jjgcy3Z555ItubxLmkqMPoDg9JUunfYawulugo7WAdzXfoX9oGMuNAO0MsHiFpcUUG+SkF0gyyAU+t0H5GkvVOXA6RlhIVKPhhG93JcFk7Sj85KXILkykJxMQdY38ryhbpA=
+  on:
+    tags: true
+    distributions: sdist bdist_wheel
+    repo: nick-allen/python-roundhouse

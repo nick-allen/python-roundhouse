@@ -39,16 +39,20 @@ class Serializer(object):
 _serializer_cache = None
 
 
-def get_serializers():
+def get_serializers(refresh_cache=False):
     """Discover and return Serializer classes from all installed plugins
 
     Serializers are cached and are not repeatedly loaded in future calls
+
+    Args:
+        refresh_cache (bool): If True, ignore any existing serializer cache and discover serializers as normal
 
     Returns:
         dict: Keys are the formats provided by and pointing to their respective Serializers
     """
     global _serializer_cache
-    if _serializer_cache is None:
+
+    if _serializer_cache is None or refresh_cache:
         from pluggy import PluginManager
 
         package_name = __name__.split('.')[0]
