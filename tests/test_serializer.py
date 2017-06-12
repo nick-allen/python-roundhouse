@@ -1,8 +1,16 @@
+import pytest
+
+from roundhouse import serialize, deserialize, get_serializers
 
 
-def test_serialize():
-    raise RuntimeError('Unwritten')
+@pytest.mark.parametrize('format_', get_serializers().keys())
+def test_serialization_cycle(format_):
+    """Top-level basic test for comparison of input data to serialized then deserialized output data"""
+    input_data = {
+        'example': {
+            'nested': 'value',
+            'key': [1, 2, 3]
+        }
+    }
 
-
-def test_deserialize():
-    raise RuntimeError('Unwritten')
+    assert input_data == deserialize(serialize(input_data, format_), format_)

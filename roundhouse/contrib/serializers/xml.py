@@ -1,6 +1,8 @@
+import io
+
 import xmltodict
 
-from roundhouse import Serializer
+from roundhouse import Serializer, serialize, deserialize
 
 
 class XMLSerializer(Serializer):
@@ -16,5 +18,10 @@ class XMLSerializer(Serializer):
         return stream
 
     def deserialize(self, stream):
-        # Expects bytes internally, but accepts full string
-        return xmltodict.parse(stream)
+        # FIXME: Hack to remove OrderedDicts from parse results
+        data = xmltodict.parse(stream)
+
+        # JSON serialization builtin to core
+        intermediate_format = 'json'
+
+        return deserialize(serialize(data, intermediate_format), intermediate_format)
