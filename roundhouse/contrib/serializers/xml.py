@@ -1,5 +1,3 @@
-import io
-
 import xmltodict
 
 from roundhouse import Serializer, serialize, deserialize

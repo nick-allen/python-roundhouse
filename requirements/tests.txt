@@ -1,5 +1,6 @@
-tox
-mock
 coverage
-pytest
+mock
 pylint
+pytest
+tox
+tox-travis
