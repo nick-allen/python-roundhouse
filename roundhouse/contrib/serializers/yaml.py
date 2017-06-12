@@ -16,7 +16,7 @@ class YAMLSerializer(Serializer):
     extensions = ['.yml', '.yaml']
 
     def serialize(self, data, stream):
-        stream.write(yaml.dump(data, default_flow_style=not self.pretty).encode())
+        stream.write(yaml.safe_dump(data, default_flow_style=not self.pretty).encode())
 
         return stream
 
