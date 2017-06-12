@@ -7,6 +7,6 @@ API Docs
 Full package API documentation
 
 .. toctree::
-    :titlesonly:
+   :titlesonly:
 
    apidoc/roundhouse

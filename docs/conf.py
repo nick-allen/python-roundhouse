@@ -5,6 +5,7 @@ import datetime
 import shutil
 import sys
 import os
+from sphinx.apidoc import main
 
 project_root = os.path.dirname(os.path.dirname(__file__))
 
@@ -14,7 +15,6 @@ project_root = os.path.dirname(os.path.dirname(__file__))
 sys.path.insert(0, project_root)
 
 import roundhouse
-from sphinx.apidoc import main
 
 apidoc_dir = './apidoc'
 if os.path.isdir(apidoc_dir):
@@ -73,7 +73,21 @@ html_theme = 'alabaster'
 # documentation.
 html_theme_options = {
     'show_powered_by': False,
-    'description': roundhouse.__doc__
+    'description': roundhouse.__doc__,
+    'github_user': 'nick-allen',
+    'github_repo': 'python-roundhouse',
+    'github_type': 'star',
+    'fixed_sidebar': True,
+    'page_width': '1000px'
+}
+
+html_sidebars = {
+    '**': [
+        'about.html',
+        'navigation.html',
+        'relations.html',
+        'searchbox.html'
+    ]
 }
 
 # Add any paths that contain custom themes here, relative to this directory.
