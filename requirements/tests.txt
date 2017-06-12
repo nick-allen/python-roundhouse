@@ -2,5 +2,7 @@ coverage
 mock
 pylint
 pytest
+pytest-cov
+pytest-pythonpath
 tox
 tox-travis
