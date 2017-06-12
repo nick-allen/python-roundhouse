@@ -38,8 +38,8 @@ setup(
         'console_scripts': [
             'rh=roundhouse.cli:main'
         ],
-        'roundhouse': [
-            'contrib_serializers=roundhouse.contrib.serializers'
+        'roundhouse.serializers': [
+            'roundhouse_contrib_serializers=roundhouse.contrib.serializers'
         ]
     },
     include_package_data=True,

@@ -6,14 +6,17 @@ Roundhouse
 .. image:: https://img.shields.io/pypi/v/roundhouse.svg
     :target: https://pypi.python.org/pypi/roundhouse
 
+.. image:: https://img.shields.io/pypi/pyversions/roundhouse.svg
+    :target: https://pypi.python.org/pypi/roundhouse
+
 .. image:: https://img.shields.io/travis/nick-allen/python-roundhouse.svg
     :target: https://travis-ci.org/nick-allen/python-roundhouse
 
 .. image:: https://coveralls.io/repos/github/nick-allen/python-roundhouse/badge.svg?branch=master
     :target: https://coveralls.io/github/nick-allen/python-roundhouse?branch=master
 
-.. image:: https://readthedocs.org/projects/roundhouse/badge/?version=latest
-    :target: https://roundhouse.readthedocs.io/en/latest/?badge=latest
+.. image:: https://readthedocs.org/projects/python-roundhouse/badge/?version=latest
+    :target: https://python-roundhouse.readthedocs.io/en/latest/?badge=latest
     :alt: Documentation Status
 
 Convert many serialization formats to many formats

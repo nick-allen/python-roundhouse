@@ -57,7 +57,7 @@ def get_serializers(refresh_cache=False):
 
         package_name = __name__.split('.')[0]
         pm = PluginManager(package_name)
-        pm.load_setuptools_entrypoints(package_name)
+        pm.load_setuptools_entrypoints(package_name + '.serializers')
 
         for mod in pm.get_plugins():
             import_submodules(mod)
