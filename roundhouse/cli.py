@@ -49,14 +49,14 @@ class ShortChoice(click.Choice):
 @click.option(
     '-I',
     '--infile',
-    type=click.File('rb', lazy=True),
+    type=click.File('r', lazy=True),
     default='-',
     help='Read from file. Defaults to stdin'
 )
 @click.option(
     '-O',
     '--outfile',
-    type=click.File('wb', lazy=True),
+    type=click.File('w', lazy=True),
     default='-',
     help='Write to file. Defaults to stdout'
 )

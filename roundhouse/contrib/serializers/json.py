@@ -12,9 +12,15 @@ class JSONSerializer(Serializer):
     extensions = ['.json']
 
     def serialize(self, data, stream):
-        stream.write(json.dumps(data, indent=4 if self.pretty else None).encode())
+        # json.dump with ensure_ascii=False yields both bytes and unicode instances as it dumps
+        # Must return full unicode output, then write to stream to avoid TypeError during dump
+        stream.write(json.dumps(
+            data,
+            ensure_ascii=False,
+            indent=4 if self.pretty else None
+        ))
 
         return stream
 
     def deserialize(self, stream):
-        return json.loads(stream.read().decode('utf-8'))
+        return json.load(stream)

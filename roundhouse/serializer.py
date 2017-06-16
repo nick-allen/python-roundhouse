@@ -1,6 +1,8 @@
 import io
 import logging
 
+import six
+
 from roundhouse.utils import import_submodules, get_recursive_subclasses, get_full_qualname
 
 logger = logging.getLogger(__name__)
@@ -9,11 +11,52 @@ logger = logging.getLogger(__name__)
 class Serializer(object):
     """Base serializer class"""
 
+    BYTES = six.binary_type
+    UNICODE = six.text_type
+
+    input_data_type = UNICODE
+    output_data_type = UNICODE
+    encoding = 'utf-8'
+
     format = None
     extensions = []
 
     def __init__(self, pretty=False):
         self.pretty = pretty
+
+    def __ensure_string_type(self, string, target):
+        """Ensure string is of correct type, encoding/decoding as needed according to serializer type and encoding"""
+        # String is of expected type
+        if isinstance(string, target):
+            return string
+
+        # String is bytes, make unicode
+        if target is self.UNICODE:
+            return string.decode(self.encoding, 'xmlcharrefreplace')
+
+        # String is unicode, make bytes
+        return string.encode(self.encoding, 'xmlcharrefreplace')
+
+    def _do_serialize(self, data, stream):
+        """Internal top-level call kicking off serialization
+
+        Handles ensuring data is of appropriate type and encoding before executing core public serialize method
+        """
+        # TODO: Pre-process strings in data to unicode
+        if self.input_data_type is self.BYTES:
+            target_stream = io.BytesIO()
+        else:
+            target_stream = stream
+
+        output_stream = self.serialize(data, target_stream)
+
+        if self.input_data_type is self.BYTES:
+            output_stream.seek(0)
+            stream.write(self.__ensure_string_type(output_stream.read(), self.UNICODE))
+
+        stream.seek(0)
+
+        return stream
 
     def serialize(self, data, stream):
         """Serialize dict to serializer's format
@@ -26,6 +69,21 @@ class Serializer(object):
             Stream providing serialized data
         """
         raise NotImplementedError
+
+    def _do_deserialize(self, serialized_data):
+        """Internal top-level call kicking off deserialization
+
+        Wraps stream in translator to ensure data is in correct type and encoding
+        """
+        if hasattr(serialized_data, 'read'):
+            serialized_data.seek(0)
+            serialized_data = serialized_data.read()
+
+        serialized_data = self.__ensure_string_type(serialized_data, self.input_data_type)
+        stream_class = io.StringIO if self.input_data_type is self.UNICODE else io.BytesIO
+
+        return self.deserialize(stream_class(serialized_data))
+        # TODO: Post-process strings in returned data to unicode
 
     def deserialize(self, stream):
         """Deserialize data in serializer's format to dict
@@ -66,7 +124,7 @@ def get_serializers(refresh_cache=False):
 
         for serializer_class in get_recursive_subclasses(Serializer):
             if not serializer_class.format:
-                logger.warning('Serializer "{}" does not provide a format, will not be auto-discovered'.format(
+                logger.warning('Serializer "{}" does not provide a format, can only be used manually directly'.format(
                     get_full_qualname(serializer_class)
                 ))
                 continue
@@ -94,7 +152,7 @@ def serialize(data, format_, **kwargs):
     serializer_class = get_serializer(format_)
     serializer = serializer_class(**kwargs)
 
-    return serializer.serialize(data, io.BytesIO()).getvalue()
+    return serializer._do_serialize(data, io.StringIO()).getvalue()
 
 
 def deserialize(serialized_data, format_, **kwargs):
@@ -113,13 +171,4 @@ def deserialize(serialized_data, format_, **kwargs):
     serializer_class = get_serializer(format_)
     serializer = serializer_class(**kwargs)
 
-    if not hasattr(serialized_data, 'read'):
-        # Wrap in stream
-        if hasattr(serialized_data, 'encode'):
-            serialized_data = serialized_data.encode()
-
-        stream = io.BytesIO(serialized_data)
-    else:
-        stream = serialized_data
-
-    return serializer.deserialize(stream)
+    return serializer._do_deserialize(serialized_data)

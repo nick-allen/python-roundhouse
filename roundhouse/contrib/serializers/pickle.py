@@ -10,6 +10,8 @@ class PickleSerializer(Serializer):
     format = 'pickle'
     extensions = ['.pkl']
 
+    input_data_type = Serializer.BYTES
+
     def serialize(self, data, stream):
         pickle.dump(data, stream)
 

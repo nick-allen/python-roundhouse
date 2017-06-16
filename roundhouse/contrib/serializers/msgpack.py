@@ -10,6 +10,8 @@ class MsgPackSerializer(Serializer):
     format = 'msgpack'
     extensions = ['.mp', '.msgpack']
 
+    input_data_type = output_data_type = Serializer.BYTES
+
     def serialize(self, data, stream):
         msgpack.dump(data, stream, use_bin_type=True)
 

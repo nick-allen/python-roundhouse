@@ -7,9 +7,9 @@ from roundhouse import serialize, deserialize, get_serializers
 def test_serialization_cycle(format_):
     """Top-level basic test for comparison of input data to serialized then deserialized output data"""
     input_data = {
-        'example': {
-            'nested': 'value',
-            'key': [1, 2, 3]
+        u'example': {
+            u'nested': u'valu\u00e9',
+            u'key': [1, 2, 3]
         }
     }
 

@@ -11,9 +11,9 @@ class TOMLSerializer(Serializer):
     extensions = ['.toml']
 
     def serialize(self, data, stream):
-        stream.write(toml.dumps(data).encode())
+        toml.dump(data, stream)
 
         return stream
 
     def deserialize(self, stream):
-        return toml.loads(stream.read().decode('utf-8'))
+        return toml.load(stream)

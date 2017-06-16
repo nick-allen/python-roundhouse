@@ -10,6 +10,8 @@ class BSONSerializer(Serializer):
     format = 'bson'
     extensions = ['.bson']
 
+    input_data_type = Serializer.BYTES
+
     def serialize(self, data, stream):
         stream.write(bson.dumps(data))
 
